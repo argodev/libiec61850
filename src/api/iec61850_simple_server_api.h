@@ -63,32 +63,28 @@ typedef struct sSimpleIedServer* IedServer;
  *
  * \return the newly generated IedServer instance
  */
-IedServer
-IedServer_create(IedModel* iedModel);
+IedServer IedServer_create(IedModel* iedModel);
 
 /**
  * Destroy an IedServer instance and release all resources (memory, TCP sockets)
  *
  * \param self the instance of IedServer to operate on.
  */
-void
-IedServer_destroy(IedServer self);
+void IedServer_destroy(IedServer self);
 
 /**
  * Start handling client connections
  *
  * \param self the instance of IedServer to operate on.
  */
-void
-IedServer_start(IedServer self);
+void IedServer_start(IedServer self);
 
 /**
  * Stop handling client connections
  *
  * \param self the instance of IedServer to operate on.
  */
-void
-IedServer_stop(IedServer self);
+void IedServer_stop(IedServer self);
 
 /**
  * Check if IedServer instance is listening for client connections
@@ -97,16 +93,14 @@ IedServer_stop(IedServer self);
  *
  * \return true if IedServer instance is listening for client connections
  */
-bool
-IedServer_isRunning(IedServer self);
+bool IedServer_isRunning(IedServer self);
 
 /**
  * Get the MmsDomain object of an IEC 61850 Logical Device.
  *
  * \param self the instance of IedServer to operate on.
  */
-MmsDomain*
-IedServer_getDomain(IedServer self, char* logicalDeviceName);
+MmsDomain* IedServer_getDomain(IedServer self, char* logicalDeviceName);
 
 /**
  * Get the MmsValue object of an MMS Named Variable that is part of the device model
@@ -117,41 +111,34 @@ IedServer_getDomain(IedServer self, char* logicalDeviceName);
  *
  * \return MmsValue object of the MMS Named Variable or NULL if the value does not exist.
  */
-MmsValue*
-IedServer_getValue(IedServer self, MmsDomain* domain, char* mmsItemId);
+MmsValue* IedServer_getValue(IedServer self, MmsDomain* domain, char* mmsItemId);
 
-void
-IedServer_setDefaultValue(IedServer self, MmsDomain* domain, char* mmsItemId);
+void IedServer_setDefaultValue(IedServer self, MmsDomain* domain, char* mmsItemId);
 
 /**
  * Create default values for all Mms model nodes and install them in the MMS server cache
  *
  * \param self the instance of IedServer to operate on.
  */
-void
-IedServer_setAllModelDefaultValues(IedServer self);
+void IedServer_setAllModelDefaultValues(IedServer self);
 
-void
-IedServer_installReadHandler(IedServer self, ReadVariableHandler readHandler, void* object);
+void IedServer_installReadHandler(IedServer self, ReadVariableHandler readHandler, void* object);
 
-void
-IedServer_installWriteHandler(IedServer self, WriteVariableHandler writeHandler, void* object);
+void IedServer_installWriteHandler(IedServer self, WriteVariableHandler writeHandler, void* object);
 
 /**
  * Lock the MMS server data model. Client requests will be postponed until the lock is removed
  *
  * \param self the instance of IedServer to operate on.
  */
-void
-IedServer_lockDataModel(IedServer self);
+void IedServer_lockDataModel(IedServer self);
 
 /**
  * Unlock the MMS server data model and process pending client requests.
  *
  * \param self the instance of IedServer to operate on.
  */
-void
-IedServer_unlockDataModel(IedServer self);
+void IedServer_unlockDataModel(IedServer self);
 
 #ifdef STACK_CONFIG_DATASETS
 
