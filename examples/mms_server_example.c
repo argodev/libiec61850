@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "mms_server.h"
@@ -36,14 +36,11 @@ static MmsServer mmsServer;
 
 static int running = 1;
 
-void sigint_handler(int sign)
-{
+void sigint_handler(int sign) {
 	running = 0;
 }
 
-static void
-mmsConnectionHandler (void* parameter, MmsServerConnection* connection, MmsServerEvent event)
-{
+static void mmsConnectionHandler (void* parameter, MmsServerConnection* connection, MmsServerEvent event) {
 	if (event == MMS_SERVER_NEW_CONNECTION) {
 		printf("New connection\n");
 	}
@@ -52,9 +49,7 @@ mmsConnectionHandler (void* parameter, MmsServerConnection* connection, MmsServe
 	}
 }
 
-static MmsValue*
-readVariableHandler (void* object, MmsDomain* domain, char* variableId)
-{
+static MmsValue* readVariableHandler (void* object, MmsDomain* domain, char* variableId) {
 	MmsTypeSpecification* typeSpec = MmsDomain_getNamedVariable(domain, variableId);
 
 	MmsValue* value = NULL;

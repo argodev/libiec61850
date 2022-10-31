@@ -18,14 +18,13 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "model.h"
 #include <stdlib.h>
 
-char*
-FunctionalConstrained_toString(FunctionalConstraint fc) {
+char* FunctionalConstrained_toString(FunctionalConstraint fc) {
 	switch (fc) {
 	case ST:
 		return "ST";
@@ -59,9 +58,7 @@ FunctionalConstrained_toString(FunctionalConstraint fc) {
 }
 
 
-LogicalDevice*
-IedModel_getDevice(IedModel* model, char* deviceName)
-{
+LogicalDevice* IedModel_getDevice(IedModel* model, char* deviceName) {
 	LogicalDevice** devices = model->devices;
 	int i = 0;
 
@@ -74,9 +71,7 @@ IedModel_getDevice(IedModel* model, char* deviceName)
 	return NULL;
 }
 
-int
-DataObject_hasFCData(DataObject* dataObject, FunctionalConstraint fc)
-{
+int DataObject_hasFCData(DataObject* dataObject, FunctionalConstraint fc) {
 	DataAttribute** attributes = dataObject->dataAttributes;
 
 	if (attributes != NULL) {
@@ -105,9 +100,7 @@ DataObject_hasFCData(DataObject* dataObject, FunctionalConstraint fc)
 	return 0;
 }
 
-int
-LogicalNode_hasFCData(LogicalNode* node, FunctionalConstraint fc)
-{
+int LogicalNode_hasFCData(LogicalNode* node, FunctionalConstraint fc) {
 	DataObject** objects = node->dataObjects;
 
 	int i = 0;
@@ -120,4 +113,3 @@ LogicalNode_hasFCData(LogicalNode* node, FunctionalConstraint fc)
 
 	return 0;
 }
-

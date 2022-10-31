@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef ISO_PRESENTATION_H_
@@ -44,24 +44,15 @@ typedef enum {
 	PRESENTATION_ERROR
 } IsoPresentationIndication;
 
-void
-IsoPresentation_init(IsoPresentation* session);
+void IsoPresentation_init(IsoPresentation* session);
 
-IsoPresentationIndication
-IsoPresentation_parseUserData(IsoPresentation* session, ByteBuffer* message);
+IsoPresentationIndication IsoPresentation_parseUserData(IsoPresentation* session, ByteBuffer* message);
 
-IsoPresentationIndication
-IsoPresentation_parseConnect(IsoPresentation* session, ByteBuffer* message);
+IsoPresentationIndication IsoPresentation_parseConnect(IsoPresentation* session, ByteBuffer* message);
 
-void
-IsoPresentation_createConnectPdu(
-		IsoPresentation* self, ByteBuffer* writeBuffer, ByteBuffer* payload);
+void IsoPresentation_createConnectPdu(IsoPresentation* self, ByteBuffer* writeBuffer, ByteBuffer* payload);
 
-IsoPresentationIndication
-IsoPresentation_createCpaMessage(
-		IsoPresentation* presentation,
-		ByteBuffer* writeBuffer,
-		ByteBuffer* payload
+IsoPresentationIndication IsoPresentation_createCpaMessage(IsoPresentation* presentation, ByteBuffer* writeBuffer, ByteBuffer* payload
 );
 
 #endif /* ISO_PRESENTATION_H_ */

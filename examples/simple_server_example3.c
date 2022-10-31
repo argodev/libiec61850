@@ -20,7 +20,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "iec61850_simple_server_api.h"
@@ -36,8 +36,7 @@ extern IedModel staticIedModel;
 
 static int running = 0;
 
-void sigint_handler(int signalId)
-{
+void sigint_handler(int signalId) {
 	running = 0;
 }
 

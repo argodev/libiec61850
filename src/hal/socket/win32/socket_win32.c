@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <winsock2.h>
@@ -65,9 +65,7 @@ static void activateKeepAlive(SOCKET s)
 	 }
 }
 
-ServerSocket
-TcpServerSocket_create(char* address, int port)
-{
+ServerSocket TcpServerSocket_create(char* address, int port) {
 	ServerSocket serverSocket = NULL;
 	int ec;
 	WSADATA wsa;
@@ -114,15 +112,11 @@ TcpServerSocket_create(char* address, int port)
 	return serverSocket;
 }
 
-void
-ServerSocket_listen(ServerSocket socket)
-{
+void ServerSocket_listen(ServerSocket socket) {
 	listen(socket->fd, socket->backLog);
 }
 
-Socket
-ServerSocket_accept(ServerSocket socket)
-{
+Socket ServerSocket_accept(ServerSocket socket) {
 	int fd;
 
 	Socket conSocket = NULL;
@@ -137,23 +131,17 @@ ServerSocket_accept(ServerSocket socket)
 	return conSocket;
 }
 
-void
-ServerSocket_setBacklog(ServerSocket socket, int backlog)
-{
+void ServerSocket_setBacklog(ServerSocket socket, int backlog) {
 	socket->backLog = backlog;
 }
 
-void
-ServerSocket_destroy(ServerSocket socket)
-{
+void ServerSocket_destroy(ServerSocket socket) {
 	closesocket(socket->fd);
 	WSACleanup();
 	free(socket);
 }
 
-Socket
-TcpSocket_create()
-{
+Socket TcpSocket_create() {
 	Socket socket = malloc(sizeof(struct sSocket));
 
 	socket->fd = -1;
@@ -161,9 +149,7 @@ TcpSocket_create()
 	return socket;
 }
 
-int
-Socket_connect(Socket self, char* address, int port)
-{
+int Socket_connect(Socket self, char* address, int port) {
 	struct hostent *server;
 	struct sockaddr_in serverAddress;
 	WSADATA wsa;
@@ -193,21 +179,15 @@ Socket_connect(Socket self, char* address, int port)
 		return 1;
 }
 
-int
-Socket_read(Socket socket, uint8_t* buf, int size)
-{
+int Socket_read(Socket socket, uint8_t* buf, int size) {
 	return recv(socket->fd, buf, size, 0);
 }
 
-int
-Socket_write(Socket socket, uint8_t* buf, int size)
-{
+int Socket_write(Socket socket, uint8_t* buf, int size) {
 	return send(socket->fd, buf, size, 0);
 }
 
-void
-Socket_destroy(Socket socket)
-{
+void Socket_destroy(Socket socket) {
 	if (socket->fd != -1) {
 		closesocket(socket->fd);
 	}

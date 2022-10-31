@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 
@@ -37,9 +37,7 @@
 #endif
 
 
-int
-clock_gettime(int dummy, struct timespec* t)
-{
+int clock_gettime(int dummy, struct timespec* t) {
 	struct timeval now;
 	int rv = gettimeofday(&now, NULL);
 	if (rv) return rv;
@@ -49,9 +47,7 @@ clock_gettime(int dummy, struct timespec* t)
 
 #endif
 
-uint64_t
-Hal_getTimeInMs()
-{
+uint64_t Hal_getTimeInMs() {
 	struct timespec tp;
 
 	clock_gettime(CLOCK_REALTIME, &tp);
@@ -62,9 +58,7 @@ Hal_getTimeInMs()
 #elif defined _WIN32
 #include "windows.h"
 
-uint64_t
-Hal_getTimeInMs()
-{
+uint64_t Hal_getTimeInMs() {
 	FILETIME ft;
 	uint64_t ll_now;
 	GetSystemTimeAsFileTime(&ft);

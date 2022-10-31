@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef MMS_MAPPING_H_
@@ -33,19 +33,14 @@ typedef struct sMmsMapping {
 	MmsDevice* mmsDevice;
 } MmsMapping;
 
-void
-MmsMapping_init(MmsMapping* mapping, IedModel* model);
+void MmsMapping_init(MmsMapping* mapping, IedModel* model);
 
-MmsDevice*
-MmsMapping_getMmsDeviceModel(MmsMapping* mapping);
+MmsDevice* MmsMapping_getMmsDeviceModel(MmsMapping* mapping);
 
-void
-MmsMapping_destroy(MmsMapping* mapping);
+void MmsMapping_destroy(MmsMapping* mapping);
 
-char*
-MmsMapping_getMmsDomainFromObjectReference(char* objectReference);
+char* MmsMapping_getMmsDomainFromObjectReference(char* objectReference);
 
-char*
-MmsMapping_createMmsVariableNameFromObjectReference(char* objectReference, FunctionalConstraint fc);
+char* MmsMapping_createMmsVariableNameFromObjectReference(char* objectReference, FunctionalConstraint fc);
 
 #endif /* MMS_MAPPING_H_ */

@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <unistd.h>
@@ -30,11 +30,7 @@
 #include "hal.h"
 #include "socket.h"
 
-
-
-ByteStream
-ByteStream_create(Socket socket, ByteBuffer* writeBuffer)
-{
+ByteStream ByteStream_create(Socket socket, ByteBuffer* writeBuffer) {
 	ByteStream self = calloc(1, sizeof(struct sByteStream));
 
 	self->socket = socket;
@@ -43,15 +39,11 @@ ByteStream_create(Socket socket, ByteBuffer* writeBuffer)
 	return self;
 }
 
-void
-ByteStream_destroy(ByteStream self)
-{
+void ByteStream_destroy(ByteStream self) {
 	free(self);
 }
 
-int
-ByteStream_sendBuffer(ByteStream self)
-{
+int ByteStream_sendBuffer(ByteStream self) {
 	int writeBufferPosition = ByteBuffer_getSize(self->writeBuffer);
 
 	if (Socket_write(self->socket, ByteBuffer_getBuffer(self->writeBuffer), writeBufferPosition)
@@ -64,18 +56,14 @@ ByteStream_sendBuffer(ByteStream self)
 		return -1;
 }
 
-int
-ByteStream_writeUint8(ByteStream self, uint8_t byte)
-{
+int ByteStream_writeUint8(ByteStream self, uint8_t byte) {
 	if (ByteBuffer_appendByte(self->writeBuffer, byte))
 		return 1;
 	else
 		return -1;
 }
 
-int
-ByteStream_readUint8(ByteStream self, uint8_t* byte)
-{
+int ByteStream_readUint8(ByteStream self, uint8_t* byte) {
 	int bytes_read;
 	uint64_t start = Hal_getTimeInMs();
 
@@ -96,9 +84,7 @@ ByteStream_readUint8(ByteStream self, uint8_t* byte)
 	return 1;
 }
 
-int
-ByteStream_readUint16(ByteStream self, uint16_t* value)
-{
+int ByteStream_readUint16(ByteStream self, uint16_t* value) {
 	uint8_t byte[2];
 	int bytes_read;
 
@@ -117,9 +103,7 @@ ByteStream_readUint16(ByteStream self, uint16_t* value)
 	return 2;
 }
 
-int
-ByteStream_skipBytes(ByteStream self, int number)
-{
+int ByteStream_skipBytes(ByteStream self, int number) {
 	int c = 0;
 	uint8_t byte;
 
@@ -139,9 +123,7 @@ ByteStream_skipBytes(ByteStream self, int number)
 	return c;
 }
 
-int
-ByteStream_readOctets(ByteStream self, uint8_t* buffer, int size)
-{
+int ByteStream_readOctets(ByteStream self, uint8_t* buffer, int size) {
 	int readBytes = 0;
 	int remainingSize = size;
 
@@ -161,4 +143,3 @@ ByteStream_readOctets(ByteStream self, uint8_t* buffer, int size)
 
 	return readBytes;
 }
-

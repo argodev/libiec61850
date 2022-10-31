@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef ISE_SESSION_H_
@@ -42,22 +42,16 @@ typedef enum {
 	SESSION_DATA
 } IsoSessionIndication;
 
-void
-IsoSession_init(IsoSession* session);
+void IsoSession_init(IsoSession* session);
 
-ByteBuffer*
-IsoSession_getUserData(IsoSession* session);
+ByteBuffer* IsoSession_getUserData(IsoSession* session);
 
-void
-IsoSession_createDataSpdu(IsoSession* session, ByteBuffer* buffer);
+void IsoSession_createDataSpdu(IsoSession* session, ByteBuffer* buffer);
 
-void
-IsoSession_createConnectSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t payloadLength);
+void IsoSession_createConnectSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t payloadLength);
 
-void
-IsoSession_createAcceptSpdu(IsoSession* session, ByteBuffer* buffer, uint8_t payloadLength);
+void IsoSession_createAcceptSpdu(IsoSession* session, ByteBuffer* buffer, uint8_t payloadLength);
 
-IsoSessionIndication
-IsoSession_parseMessage(IsoSession* session, ByteBuffer* message);
+IsoSessionIndication IsoSession_parseMessage(IsoSession* session, ByteBuffer* message);
 
 #endif /* ISE_SESSION_H_ */

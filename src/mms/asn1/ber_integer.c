@@ -18,16 +18,14 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <string.h>
 #include "platform_endian.h"
 #include "ber_integer.h"
 
-static void
-revertByteOrder(uint8_t* octets, const int size)
-{
+static void revertByteOrder(uint8_t* octets, const int size) {
 	int i;
 	uint8_t temp;
 
@@ -38,9 +36,7 @@ revertByteOrder(uint8_t* octets, const int size)
 	}
 }
 
-static int
-compressInteger(uint8_t* integer, int originalSize)
-{
+static int compressInteger(uint8_t* integer, int originalSize) {
 	uint8_t* integerEnd = integer + originalSize - 1;
 	uint8_t* bytePosition;
 
@@ -77,9 +73,7 @@ compressInteger(uint8_t* integer, int originalSize)
 	return newSize;
 }
 
-static int
-setIntegerValue(Asn1PrimitiveValue* self, uint8_t* valueBuffer, int bufferSize)
-{
+static int setIntegerValue(Asn1PrimitiveValue* self, uint8_t* valueBuffer, int bufferSize) {
 	if (ORDER_LITTLE_ENDIAN)
 		revertByteOrder(valueBuffer, bufferSize);
 
@@ -94,15 +88,11 @@ setIntegerValue(Asn1PrimitiveValue* self, uint8_t* valueBuffer, int bufferSize)
 		return 0;
 }
 
-Asn1PrimitiveValue*
-BerInteger_createInt32()
-{
+Asn1PrimitiveValue* BerInteger_createInt32() {
 	return Asn1PrimitiveValue_create(4);
 }
 
-Asn1PrimitiveValue*
-BerInteger_createFromBuffer(uint8_t* buf, int size)
-{
+Asn1PrimitiveValue* BerInteger_createFromBuffer(uint8_t* buf, int size) {
 	Asn1PrimitiveValue* self = Asn1PrimitiveValue_create(size);
 
 	memcpy(self->octets, buf, size);
@@ -110,9 +100,7 @@ BerInteger_createFromBuffer(uint8_t* buf, int size)
 	return self;
 }
 
-int
-BerInteger_setFromBerInteger(Asn1PrimitiveValue* self, Asn1PrimitiveValue* value)
-{
+int BerInteger_setFromBerInteger(Asn1PrimitiveValue* self, Asn1PrimitiveValue* value) {
 	if (self->maxSize >= value->size) {
 		self->size = value->size;
 
@@ -124,69 +112,54 @@ BerInteger_setFromBerInteger(Asn1PrimitiveValue* self, Asn1PrimitiveValue* value
 		return 0;
 }
 
-int
-BerInteger_setInt32(Asn1PrimitiveValue* self, int32_t value)
-{
+int BerInteger_setInt32(Asn1PrimitiveValue* self, int32_t value) {
 	int32_t valueCopy = value;
 	uint8_t* valueBuffer = (uint8_t*) &valueCopy;
 
 	return setIntegerValue(self, valueBuffer, sizeof(value));
 }
 
-Asn1PrimitiveValue*
-BerInteger_createFromInt32(int32_t value)
-{
+Asn1PrimitiveValue* BerInteger_createFromInt32(int32_t value) {
 	Asn1PrimitiveValue* asn1Value = BerInteger_createInt32();
 	BerInteger_setInt32(asn1Value, value);
 
 	return asn1Value;
 }
 
-int
-BerInteger_setUint32(Asn1PrimitiveValue* self, uint32_t value)
-{
+int BerInteger_setUint32(Asn1PrimitiveValue* self, uint32_t value) {
 	uint32_t valueCopy = value;
 	uint8_t* valueBuffer = (uint8_t*) &valueCopy;
 
 	return setIntegerValue(self, valueBuffer, sizeof(value));
 }
 
-Asn1PrimitiveValue*
-BerInteger_createFromUint32(uint32_t value)
-{
+Asn1PrimitiveValue* BerInteger_createFromUint32(uint32_t value) {
 	Asn1PrimitiveValue* asn1Value = BerInteger_createInt32();
 	BerInteger_setUint32(asn1Value, value);
 
 	return asn1Value;
 }
 
-Asn1PrimitiveValue*
-BerInteger_createInt64()
-{
+Asn1PrimitiveValue* BerInteger_createInt64() {
 	return Asn1PrimitiveValue_create(64);
 }
 
-int
-BerInteger_setInt64(Asn1PrimitiveValue* self, int64_t value)
-{
+int BerInteger_setInt64(Asn1PrimitiveValue* self, int64_t value) {
 	int64_t valueCopy = value;
 	uint8_t* valueBuffer = (uint8_t*) &valueCopy;
 
 	return setIntegerValue(self, valueBuffer, sizeof(value));
 }
 
-Asn1PrimitiveValue*
-BerInteger_createFromInt64(int64_t value)
-{
+Asn1PrimitiveValue* BerInteger_createFromInt64(int64_t value) {
 	Asn1PrimitiveValue* asn1Value = BerInteger_createInt64();
 	BerInteger_setInt64(asn1Value, value);
 
 	return asn1Value;
 }
 
-int /* 1 - if conversion is possible, 0 - out of range */
-BerInteger_toInt32(Asn1PrimitiveValue* self, int32_t* nativeValue)
-{
+/* 1 - if conversion is possible, 0 - out of range */
+int BerInteger_toInt32(Asn1PrimitiveValue* self, int32_t* nativeValue) {
 	if (self->size < 5) {
 		uint8_t* buf = self->octets;
 		int i;
@@ -205,9 +178,8 @@ BerInteger_toInt32(Asn1PrimitiveValue* self, int32_t* nativeValue)
 		return 0;
 }
 
-int /* 1 - if conversion is possible, 0 - out of range */
-BerInteger_toUint32(Asn1PrimitiveValue* self, uint32_t* nativeValue)
-{
+/* 1 - if conversion is possible, 0 - out of range */
+int BerInteger_toUint32(Asn1PrimitiveValue* self, uint32_t* nativeValue) {
 	if (self->size < 5) {
 		uint8_t* buf = self->octets;
 		int i;
@@ -223,9 +195,8 @@ BerInteger_toUint32(Asn1PrimitiveValue* self, uint32_t* nativeValue)
 		return 0;
 }
 
-int /* 1 - if conversion is possible, 0 - out of range */
-BerInteger_toInt64(Asn1PrimitiveValue* self, int64_t* nativeValue)
-{
+/* 1 - if conversion is possible, 0 - out of range */
+int BerInteger_toInt64(Asn1PrimitiveValue* self, int64_t* nativeValue) {
 	if (self->size < 9) {
 		uint8_t* buf = self->octets;
 		int i;
@@ -243,4 +214,3 @@ BerInteger_toInt64(Asn1PrimitiveValue* self, int64_t* nativeValue)
 	else
 		return 0;
 }
-

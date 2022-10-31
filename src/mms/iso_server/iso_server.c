@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stdlib.h>
@@ -37,8 +37,6 @@
 #define TCP_PORT 102
 #define BACKLOG 10
 
-
-
 struct sIsoServer {
 	IsoServerState state;
 	ConnectionIndicationHandler connectionHandler;
@@ -48,10 +46,7 @@ struct sIsoServer {
 	Socket serverSocket;
 };
 
-
-static void
-isoServerThread(void* isoServerParam)
-{
+static void isoServerThread(void* isoServerParam) {
 	IsoServer self = (IsoServer) isoServerParam;
 
 	Socket connectionSocket;
@@ -69,9 +64,7 @@ isoServerThread(void* isoServerParam)
 
 	self->state = ISO_SVR_STATE_RUNNING;
 
-    while (self->state == ISO_SVR_STATE_RUNNING)
-    {
-
+    while (self->state == ISO_SVR_STATE_RUNNING) {
     	if ((connectionSocket = ServerSocket_accept(self->serverSocket)) == NULL) {
 			break;;
 		}
@@ -80,9 +73,7 @@ isoServerThread(void* isoServerParam)
 
 			self->connectionHandler(ISO_CONNECTION_OPENED, self->connectionHandlerParameter,
 					isoConnection);
-
 		}
-
 	}
 
     self->state = ISO_SVR_STATE_STOPPED;
@@ -91,9 +82,7 @@ cleanUp:
  	self->serverSocket = NULL;
 }
 
-IsoServer
-IsoServer_create()
-{
+IsoServer IsoServer_create() {
 	IsoServer self = calloc(1, sizeof(struct sIsoServer));
 
 	self->state = ISO_SVR_STATE_IDLE;
@@ -101,27 +90,19 @@ IsoServer_create()
 	return self;
 }
 
-IsoServerState
-IsoServer_getState(IsoServer self)
-{
+IsoServerState IsoServer_getState(IsoServer self) {
 	return self->state;
 }
 
-inline void
-IsoServer_setAuthenticationParameter(IsoServer self, AcseAuthenticationParameter authParameter)
-{
+inline void IsoServer_setAuthenticationParameter(IsoServer self, AcseAuthenticationParameter authParameter) {
 	self->authParameter = authParameter;
 }
 
-inline AcseAuthenticationParameter
-IsoServer_getAuthenticationParameter(IsoServer self)
-{
+inline AcseAuthenticationParameter IsoServer_getAuthenticationParameter(IsoServer self) {
 	return self->authParameter;
 }
 
-void
-IsoServer_startListening(IsoServer self)
-{
+void IsoServer_startListening(IsoServer self) {
 	self->serverThread = Thread_create(isoServerThread, self, false);
 
 	Thread_start(self->serverThread );
@@ -132,9 +113,7 @@ IsoServer_startListening(IsoServer self)
 	if (DEBUG) printf("new iso server thread started\n");
 }
 
-void
-IsoServer_stopListening(IsoServer self)
-{
+void IsoServer_stopListening(IsoServer self) {
 	self->state = ISO_SVR_STATE_STOPPED;
 
 	if (self->serverSocket != NULL) {
@@ -146,9 +125,7 @@ IsoServer_stopListening(IsoServer self)
 		Thread_destroy(self->serverThread);
 }
 
-void
-IsoServer_closeConnection(IsoServer self, IsoConnection isoConnection)
-{
+void IsoServer_closeConnection(IsoServer self, IsoConnection isoConnection) {
 	self->connectionHandler(ISO_CONNECTION_CLOSED, self->connectionHandlerParameter,
 						isoConnection);
 
@@ -156,20 +133,14 @@ IsoServer_closeConnection(IsoServer self, IsoConnection isoConnection)
 	IsoConnection_destroy(isoConnection);
 }
 
-void
-IsoServer_setConnectionHandler(IsoServer self, ConnectionIndicationHandler handler,
-		void* parameter)
-{
+void IsoServer_setConnectionHandler(IsoServer self, ConnectionIndicationHandler handler, void* parameter) {
 	self->connectionHandler = handler;
 	self->connectionHandlerParameter = parameter;
 }
 
-void
-IsoServer_destroy(IsoServer self)
-{
+void IsoServer_destroy(IsoServer self) {
 	if (self->state == ISO_SVR_STATE_RUNNING)
 		IsoServer_stopListening(self);
 
 	free(self);
 }
-

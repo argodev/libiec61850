@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef ISO_SERVER_H_
@@ -54,48 +54,32 @@ typedef void (*ConnectionIndicationHandler) (IsoConnectionIndication indication,
 
 typedef void (*MessageReceivedHandler) (void* parameter, ByteBuffer* message, ByteBuffer* response);
 
-IsoConnection
-IsoConnection_create(Socket socket, IsoServer isoServer);
+IsoConnection IsoConnection_create(Socket socket, IsoServer isoServer);
 
-void
-IsoConnection_close(IsoConnection self);
+void IsoConnection_close(IsoConnection self);
 
-void
-IsoConnection_installListener(IsoConnection self, MessageReceivedHandler handler,
-		void* parameter);
+void IsoConnection_installListener(IsoConnection self, MessageReceivedHandler handler, void* parameter);
 
-void
-IsoConnection_sendMessage(IsoConnection self, ByteBuffer* message);
+void IsoConnection_sendMessage(IsoConnection self, ByteBuffer* message);
 
-void
-IsoConnection_destroy(IsoConnection self);
+void IsoConnection_destroy(IsoConnection self);
 
-IsoServer
-IsoServer_create();
+IsoServer IsoServer_create();
 
-IsoServerState
-IsoServer_getState(IsoServer self);
+IsoServerState IsoServer_getState(IsoServer self);
 
-void
-IsoServer_setConnectionHandler(IsoServer self, ConnectionIndicationHandler handler,
-		void* parameter);
+void IsoServer_setConnectionHandler(IsoServer self, ConnectionIndicationHandler handler, void* parameter);
 
-void
-IsoServer_setAuthenticationParameter(IsoServer self, AcseAuthenticationParameter authParameter);
+void IsoServer_setAuthenticationParameter(IsoServer self, AcseAuthenticationParameter authParameter);
 
-AcseAuthenticationParameter
-IsoServer_getAuthenticationParameter(IsoServer self);
+AcseAuthenticationParameter IsoServer_getAuthenticationParameter(IsoServer self);
 
-void
-IsoServer_startListening(IsoServer self);
+void IsoServer_startListening(IsoServer self);
 
-void
-IsoServer_stopListening(IsoServer self);
+void IsoServer_stopListening(IsoServer self);
 
-void
-IsoServer_closeConnection(IsoServer self, IsoConnection isoConnection);
+void IsoServer_closeConnection(IsoServer self, IsoConnection isoConnection);
 
-void
-IsoServer_destroy(IsoServer self);
+void IsoServer_destroy(IsoServer self);
 
 #endif /* ISO_SERVER_H_ */

@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "platform_types.h"
@@ -29,9 +29,7 @@
 #include <stdio.h>
 
 
-static int
-parseAcceptParameters(IsoSession* session, ByteBuffer* message, int startOffset, int parameterLength)
-{
+static int parseAcceptParameters(IsoSession* session, ByteBuffer* message, int startOffset, int parameterLength) {
 	uint8_t pi;
 	uint8_t param_len;
 	uint8_t param_val;
@@ -99,9 +97,7 @@ parseAcceptParameters(IsoSession* session, ByteBuffer* message, int startOffset,
 		return -1;
 }
 
-static IsoSessionIndication
-parseSessionHeaderParameters(IsoSession* session, ByteBuffer* message, int parametersOctets)
-{
+static IsoSessionIndication parseSessionHeaderParameters(IsoSession* session, ByteBuffer* message, int parametersOctets) {
 	int offset = 2;
 	uint8_t pgi;
 	uint8_t parameterLength;
@@ -191,9 +187,7 @@ parseSessionHeaderParameters(IsoSession* session, ByteBuffer* message, int param
 	return SESSION_ERROR;
 }
 
-void
-IsoSession_createDataSpdu(IsoSession* session, ByteBuffer* buffer)
-{
+void IsoSession_createDataSpdu(IsoSession* session, ByteBuffer* buffer) {
 	int offset = buffer->size;
 	uint8_t* buf = buffer->buffer;
 
@@ -206,9 +200,7 @@ IsoSession_createDataSpdu(IsoSession* session, ByteBuffer* buffer)
 }
 
 
-static int
-encodeConnectAcceptItem(uint8_t* buf, int offset, uint8_t options)
-{
+static int encodeConnectAcceptItem(uint8_t* buf, int offset, uint8_t options) {
 	buf[offset++] = 5;
 	buf[offset++] = 6;
 	buf[offset++] = 0x13; /* Protocol Options */
@@ -221,9 +213,7 @@ encodeConnectAcceptItem(uint8_t* buf, int offset, uint8_t options)
 	return offset;
 }
 
-static int
-encodeSessionRequirement(IsoSession* self, uint8_t* buf, int offset)
-{
+static int encodeSessionRequirement(IsoSession* self, uint8_t* buf, int offset) {
 	buf[offset++] = 0x14;
 	buf[offset++] = 2;
 	buf[offset++] = (uint8_t) (self->sessionRequirement / 0x100);
@@ -232,9 +222,7 @@ encodeSessionRequirement(IsoSession* self, uint8_t* buf, int offset)
 	return offset;
 }
 
-static int
-encodeCallingSessionSelector(IsoSession* self, uint8_t* buf, int offset)
-{
+static int encodeCallingSessionSelector(IsoSession* self, uint8_t* buf, int offset) {
 	buf[offset++] = 0x33;
 	buf[offset++] = 2;
 	buf[offset++] = (uint8_t) (self->callingSessionSelector / 0x100);
@@ -243,9 +231,7 @@ encodeCallingSessionSelector(IsoSession* self, uint8_t* buf, int offset)
 	return offset;
 }
 
-static int
-encodeCalledSessionSelector(IsoSession* self, uint8_t* buf, int offset)
-{
+static int encodeCalledSessionSelector(IsoSession* self, uint8_t* buf, int offset) {
 	buf[offset++] = 0x34;
 	buf[offset++] = 2;
 	buf[offset++] = (uint8_t) (self->calledSessionSelector / 0x100);
@@ -254,18 +240,14 @@ encodeCalledSessionSelector(IsoSession* self, uint8_t* buf, int offset)
 	return offset;
 }
 
-static int
-encodeSessionUserData(IsoSession* self, uint8_t* buf, int offset, uint8_t payloadLength)
-{
+static int encodeSessionUserData(IsoSession* self, uint8_t* buf, int offset, uint8_t payloadLength) {
 	buf[offset++] = 0xc1;
 	buf[offset++] = payloadLength;
 
 	return offset;
 }
 
-void
-IsoSession_createConnectSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t payloadLength)
-{
+void IsoSession_createConnectSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t payloadLength) {
 	int offset = buffer->size;
 	uint8_t* buf = buffer->buffer;
 	int lengthOffset;
@@ -290,9 +272,7 @@ IsoSession_createConnectSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t paylo
 	buffer->size = offset;
 }
 
-void
-IsoSession_createAcceptSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t payloadLength)
-{
+void IsoSession_createAcceptSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t payloadLength) {
 	int offset = buffer->size;
 	uint8_t* buf = buffer->buffer;
 	int lengthOffset;
@@ -315,24 +295,18 @@ IsoSession_createAcceptSpdu(IsoSession* self, ByteBuffer* buffer, uint8_t payloa
 	buffer->size = offset;
 }
 
-void
-IsoSession_init(IsoSession* session)
-{
+void IsoSession_init(IsoSession* session) {
 	memset(session, 0, sizeof(IsoSession));
 	session->sessionRequirement = 0x0002; /* default = duplex functional unit */
 	session->callingSessionSelector = 0x0001;
 	session->calledSessionSelector = 0x0001;
 }
 
-ByteBuffer*
-IsoSession_getUserData(IsoSession* session)
-{
+ByteBuffer* IsoSession_getUserData(IsoSession* session) {
 	return &session->userData;
 }
 
-IsoSessionIndication
-IsoSession_parseMessage(IsoSession* session, ByteBuffer* message)
-{
+IsoSessionIndication IsoSession_parseMessage(IsoSession* session, ByteBuffer* message) {
 	uint8_t* buffer = message->buffer;
 	uint8_t id;
 	uint8_t length;
@@ -383,4 +357,3 @@ IsoSession_parseMessage(IsoSession* session, ByteBuffer* message)
 
 	return SESSION_ERROR;
 }
-

@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stdlib.h>
@@ -30,9 +30,7 @@
 #include "stack_config.h"
 
 
-static MmsTypeSpecification*
-createNamedVariableFromDataAttribute(DataAttribute* attribute)
-{
+static MmsTypeSpecification* createNamedVariableFromDataAttribute(DataAttribute* attribute) {
 	MmsTypeSpecification* origNamedVariable = calloc(1, sizeof(MmsTypeSpecification));
 	origNamedVariable->name = attribute->name;
 
@@ -180,9 +178,7 @@ createNamedVariableFromDataAttribute(DataAttribute* attribute)
 	return origNamedVariable;
 }
 
-static MmsTypeSpecification*
-createFCNamedVariableFromDataObject(DataObject* dataObject, FunctionalConstraint fc)
-{
+static MmsTypeSpecification* createFCNamedVariableFromDataObject(DataObject* dataObject, FunctionalConstraint fc) {
 	MmsTypeSpecification* namedVariable = calloc(1, sizeof(MmsTypeSpecification));
 	namedVariable->name = dataObject->name;
 	namedVariable->type = MMS_STRUCTURE;
@@ -235,9 +231,7 @@ createFCNamedVariableFromDataObject(DataObject* dataObject, FunctionalConstraint
 	return namedVariable;
 }
 
-static MmsTypeSpecification*
-createFCNamedVariable(LogicalNode* logicalNode, FunctionalConstraint fc)
-{
+static MmsTypeSpecification* createFCNamedVariable(LogicalNode* logicalNode, FunctionalConstraint fc) {
 	MmsTypeSpecification* namedVariable = calloc(1, sizeof(MmsTypeSpecification));
 	namedVariable->name = FunctionalConstrained_toString(fc);
 	namedVariable->type = MMS_STRUCTURE;
@@ -272,10 +266,7 @@ createFCNamedVariable(LogicalNode* logicalNode, FunctionalConstraint fc)
 	return namedVariable;
 }
 
-
-static MmsTypeSpecification*
-createNamedVariableFromLogicalNode(LogicalNode* logicalNode)
-{
+static MmsTypeSpecification* createNamedVariableFromLogicalNode(LogicalNode* logicalNode) {
 	MmsTypeSpecification* namedVariable = malloc(sizeof(MmsTypeSpecification));
 
 	namedVariable->name = logicalNode->name;
@@ -371,9 +362,7 @@ createNamedVariableFromLogicalNode(LogicalNode* logicalNode)
 	return namedVariable;
 }
 
-static void
-createDataSetsFromLogicalNode(MmsDevice* mmsDevice, LogicalNode* logicalNode, MmsDomain* domain)
-{
+static void createDataSetsFromLogicalNode(MmsDevice* mmsDevice, LogicalNode* logicalNode, MmsDomain* domain) {
 	if (logicalNode->dataSets != NULL) {
 		int dataSetCount = ArrayList_listSize((void**) (logicalNode->dataSets));
 
@@ -420,9 +409,7 @@ createDataSetsFromLogicalNode(MmsDevice* mmsDevice, LogicalNode* logicalNode, Mm
 	}
 }
 
-static MmsDomain*
-createMmsDomainFromIedDevice(LogicalDevice* logicalDevice)
-{
+static MmsDomain* createMmsDomainFromIedDevice(LogicalDevice* logicalDevice) {
 	MmsDomain* domain = MmsDomain_create(logicalDevice->name);
 
 	int nodesCount = ArrayList_listSize((void**) (logicalDevice->logicalNodes));
@@ -442,9 +429,7 @@ createMmsDomainFromIedDevice(LogicalDevice* logicalDevice)
 	return domain;
 }
 
-static void
-createMmsDataModel(int iedDeviceCount, MmsDevice* mmsDevice, IedModel* iedModel)
-{
+static void createMmsDataModel(int iedDeviceCount, MmsDevice* mmsDevice, IedModel* iedModel) {
 	int i = 0;
 	mmsDevice->domains = malloc((iedDeviceCount) * sizeof(MmsDomain*));
 	mmsDevice->domainCount = iedDeviceCount;
@@ -455,25 +440,18 @@ createMmsDataModel(int iedDeviceCount, MmsDevice* mmsDevice, IedModel* iedModel)
 	}
 }
 
-
-static void
-createDomainDataSets(MmsDevice* mmsDevice, LogicalDevice* logicalDevice)
-{
+static void createDomainDataSets(MmsDevice* mmsDevice, LogicalDevice* logicalDevice) {
 	MmsDomain* domain = MmsDevice_getDomain(mmsDevice, logicalDevice->name);
 
 	int i = 0;
 
 	while (logicalDevice->logicalNodes[i] != NULL) {
-
 		createDataSetsFromLogicalNode(mmsDevice, logicalDevice->logicalNodes[i], domain);
-
 		i++;
 	}
 }
 
-static void
-createDataSets(int iedDeviceCount, MmsDevice* mmsDevice, IedModel* iedModel)
-{
+static void createDataSets(int iedDeviceCount, MmsDevice* mmsDevice, IedModel* iedModel) {
 	int i = 0;
 	while (iedModel->devices[i] != NULL ) {
 		createDomainDataSets(mmsDevice, iedModel->devices[i]);
@@ -481,9 +459,7 @@ createDataSets(int iedDeviceCount, MmsDevice* mmsDevice, IedModel* iedModel)
 	}
 }
 
-static MmsDevice*
-createMmsModelFromIedModel(IedModel* iedModel)
-{
+static MmsDevice* createMmsModelFromIedModel(IedModel* iedModel) {
 	MmsDevice* mmsDevice = NULL;
 
 	if (iedModel->devices != NULL) {
@@ -500,32 +476,23 @@ createMmsModelFromIedModel(IedModel* iedModel)
 	return mmsDevice;
 }
 
-
-void
-MmsMapping_init(MmsMapping* mapping, IedModel* model)
-{
+void MmsMapping_init(MmsMapping* mapping, IedModel* model) {
 	mapping->model = model;
-
 	mapping->mmsDevice = createMmsModelFromIedModel(model);
 }
 
-MmsDevice*
-MmsMapping_getMmsDeviceModel(MmsMapping* mapping) {
+MmsDevice* MmsMapping_getMmsDeviceModel(MmsMapping* mapping) {
 	return mapping->mmsDevice;
 }
 
-void
-MmsMapping_destroy(MmsMapping* mapping)
-{
+void MmsMapping_destroy(MmsMapping* mapping) {
 	if (mapping->mmsDevice != NULL) {
 		MmsDevice_destroy(mapping->mmsDevice);
 		mapping->mmsDevice = NULL;
 	}
 }
 
-char*
-MmsMapping_getMmsDomainFromObjectReference(char* objectReference)
-{
+char* MmsMapping_getMmsDomainFromObjectReference(char* objectReference) {
 	int objRefLength = strlen(objectReference);
 
 	//check if LD name is present
@@ -551,9 +518,7 @@ MmsMapping_getMmsDomainFromObjectReference(char* objectReference)
 	return domainName;
 }
 
-char*
-MmsMapping_createMmsVariableNameFromObjectReference(char* objectReference, FunctionalConstraint fc)
-{
+char* MmsMapping_createMmsVariableNameFromObjectReference(char* objectReference, FunctionalConstraint fc) {
 	int objRefLength = strlen(objectReference);
 
 	//check if LD name is present

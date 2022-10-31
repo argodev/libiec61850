@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stdlib.h>
@@ -80,7 +80,6 @@ int main(int argc, char** argv) {
 	LinkedList_destroy(nameList);
 	printf("\n");
 
-
 	MmsValue* value;
 
 	MmsConnection_getVariableAccessAttributes(con, "SampleIEDDevice1", "MMXU2$MX$TotW");
@@ -110,4 +109,3 @@ int main(int argc, char** argv) {
 exit:
 	MmsConnection_destroy(con);
 }
-

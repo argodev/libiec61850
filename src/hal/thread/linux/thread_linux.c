@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 
@@ -34,9 +34,7 @@ struct sThread {
 	bool autodestroy;
 };
 
-Thread
-Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestroy)
-{
+Thread Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestroy) {
 	Thread thread = malloc(sizeof(struct sThread));
 
 	thread->parameter = parameter;
@@ -47,9 +45,7 @@ Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestro
 	return thread;
 }
 
-static void*
-destroyAutomaticThread(Thread thread)
-{
+static void* destroyAutomaticThread(Thread thread) {
 	thread->function(thread->parameter);
 
 	//pthread_detach(thread->pthread);
@@ -59,9 +55,7 @@ destroyAutomaticThread(Thread thread)
 	return NULL;
 }
 
-void
-Thread_start(Thread thread)
-{
+void Thread_start(Thread thread) {
 	if (thread->autodestroy == true) {
 		pthread_create(&thread->pthread, NULL, destroyAutomaticThread, thread);
 		pthread_detach(thread->pthread);
@@ -72,17 +66,12 @@ Thread_start(Thread thread)
 	thread->state = 1;
 }
 
-void
-Thread_destroy(Thread thread)
-{
+void Thread_destroy(Thread thread) {
 	if (thread->state == 1)
 		pthread_join(thread->pthread, NULL);
 	free(thread);
 }
 
-void
-Thread_sleep(int millies)
-{
+void Thread_sleep(int millies) {
 	usleep(millies * 1000);
 }
-

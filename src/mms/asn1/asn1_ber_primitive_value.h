@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef ASN1_BER_PRIMITIVE_VALUE_H_
@@ -32,19 +32,14 @@ typedef struct {
 	uint8_t* octets;
 } Asn1PrimitiveValue;
 
-Asn1PrimitiveValue*
-Asn1PrimitiveValue_create(int size);
+Asn1PrimitiveValue* Asn1PrimitiveValue_create(int size);
 
-int
-Asn1PrimitiveValue_getSize(Asn1PrimitiveValue* self);
+int Asn1PrimitiveValue_getSize(Asn1PrimitiveValue* self);
 
-int
-Asn1PrimitiveValue_getMaxSize(Asn1PrimitiveValue* self);
+int Asn1PrimitiveValue_getMaxSize(Asn1PrimitiveValue* self);
 
-Asn1PrimitiveValue*
-Asn1PrimitiveValue_clone(Asn1PrimitiveValue* self);
+Asn1PrimitiveValue* Asn1PrimitiveValue_clone(Asn1PrimitiveValue* self);
 
-void
-Asn1PrimitiveValue_destroy(Asn1PrimitiveValue* self);
+void Asn1PrimitiveValue_destroy(Asn1PrimitiveValue* self);
 
 #endif /* ASN1_BER_PRIMITIVE_VALUE_H_ */

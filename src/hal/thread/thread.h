@@ -20,7 +20,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef THREAD_H_
@@ -48,8 +48,7 @@ typedef void* (*ThreadExecutionFunction) (void*);
  *
  * \return the newly created Thread instance
  */
-Thread
-Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestroy);
+Thread Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestroy);
 
 /**
  * Start a Thread.
@@ -59,22 +58,19 @@ Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestro
  *
  * \param thread the Thread instance to start
  */
-void
-Thread_start(Thread thread);
+void Thread_start(Thread thread);
 
 /**
  * Destroy a Thread and free resources.
  *
  * \param thread the Thread instance to destroy
  */
-void
-Thread_destroy(Thread thread);
+void Thread_destroy(Thread thread);
 
 /**
  * Suspend execution of the Thread for the specified number of milliseconds
  */
-void
-Thread_sleep(int millies);
+void Thread_sleep(int millies);
 
 /*! @} */
 

@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef COTP_H_
@@ -56,30 +56,20 @@ typedef enum {
 int inline /* in byte */
 CotpConnection_getTpduSize(CotpConnection* self);
 
-void
-CotpConnection_setTpduSize(CotpConnection* self, int tpduSize /* in byte */);
+void CotpConnection_setTpduSize(CotpConnection* self, int tpduSize /* in byte */);
 
-void
-CotpConnection_init(CotpConnection* self, Socket socket,
-		ByteBuffer* payloadBuffer);
+void CotpConnection_init(CotpConnection* self, Socket socket, ByteBuffer* payloadBuffer);
 
-void
-CotpConnection_destroy(CotpConnection* self);
+void CotpConnection_destroy(CotpConnection* self);
 
-CotpIndication
-CotpConnection_parseIncomingMessage(CotpConnection* self);
+CotpIndication CotpConnection_parseIncomingMessage(CotpConnection* self);
 
-CotpIndication
-CotpConnection_sendConnectionRequestMessage(CotpConnection* self);
+CotpIndication CotpConnection_sendConnectionRequestMessage(CotpConnection* self);
 
-CotpIndication
-CotpConnection_sendConnectionResponseMessage(CotpConnection* self);
+CotpIndication CotpConnection_sendConnectionResponseMessage(CotpConnection* self);
 
-CotpIndication
-CotpConnection_sendDataMessage(CotpConnection* self, ByteBuffer* payload);
+CotpIndication CotpConnection_sendDataMessage(CotpConnection* self, ByteBuffer* payload);
 
-ByteBuffer*
-CotpConnection_getPayload(CotpConnection* self);
-
+ByteBuffer* CotpConnection_getPayload(CotpConnection* self);
 
 #endif /* COTP_H_ */

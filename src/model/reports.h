@@ -10,9 +10,6 @@
 
 #include <stdint.h>
 
-
-
-
 //void MmsMapping_addReportControlBlock(ReportControlBlock rcb);
 //void MmsMapping_sendReport(ReportControlBlock rcb);
 

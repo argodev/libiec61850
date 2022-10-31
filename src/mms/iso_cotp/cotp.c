@@ -23,7 +23,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stdio.h>
@@ -39,12 +39,9 @@
 
 #define WRITE_BUF_SIZE COTP_MAX_TPDU_SIZE
 
-static int
-addPayloadToBuffer(CotpConnection* self, int rfc1006Length);
+static int addPayloadToBuffer(CotpConnection* self, int rfc1006Length);
 
-static CotpIndication
-writeOptions(CotpConnection* self)
-{
+static CotpIndication writeOptions(CotpConnection* self) {
 	if (self->options.tsap_id_dst != -1) {
 		if (ByteStream_writeUint8(self->stream, 0xc2) == -1) return ERROR;
 		if (ByteStream_writeUint8(self->stream, 2) == -1) return ERROR;
@@ -74,9 +71,7 @@ writeOptions(CotpConnection* self)
 	return OK;
 }
 
-static int
-getOptionsLength(CotpConnection* self)
-{
+static int getOptionsLength(CotpConnection* self) {
 	int optionsLength = 0;
 	if (self->options.tpdu_size != -1)
 		optionsLength += 3;
@@ -87,15 +82,11 @@ getOptionsLength(CotpConnection* self)
 	return optionsLength;
 }
 
-static inline int
-getConnectionResponseLength(CotpConnection* self)
-{
+static inline int getConnectionResponseLength(CotpConnection* self) {
 	return 11 + getOptionsLength(self);
 }
 
-static inline CotpIndication
-writeStaticConnectResponseHeader(CotpConnection* self)
-{
+static inline CotpIndication writeStaticConnectResponseHeader(CotpConnection* self) {
 	if (ByteStream_writeUint8(self->stream, 6 + getOptionsLength(self)) != 1)
 		return ERROR;
 	if (ByteStream_writeUint8(self->stream, 0xd0) != 1)
@@ -114,9 +105,7 @@ writeStaticConnectResponseHeader(CotpConnection* self)
 	return OK;
 }
 
-static CotpIndication
-writeRfc1006Header(CotpConnection* self, int len)
-{
+static CotpIndication writeRfc1006Header(CotpConnection* self, int len) {
 	if (ByteStream_writeUint8(self->stream, (uint8_t) 0x03) != 1)
 		return ERROR;
 	if (ByteStream_writeUint8(self->stream, (uint8_t) 0x00) != 1)
@@ -129,9 +118,7 @@ writeRfc1006Header(CotpConnection* self, int len)
 	return OK;
 }
 
-static CotpIndication
-writeDataTpduHeader(CotpConnection* self, int isLastUnit)
-{
+static CotpIndication writeDataTpduHeader(CotpConnection* self, int isLastUnit) {
 	if (ByteStream_writeUint8(self->stream, (uint8_t) 0x02) != 1)
 		return ERROR;
 
@@ -150,9 +137,7 @@ writeDataTpduHeader(CotpConnection* self, int isLastUnit)
 	return OK;
 }
 
-CotpIndication
-CotpConnection_sendDataMessage(CotpConnection* self, ByteBuffer* payload)
-{
+CotpIndication CotpConnection_sendDataMessage(CotpConnection* self, ByteBuffer* payload) {
 	int fragments = 1;
 
 	int fragmentPayloadSize = CotpConnection_getTpduSize(self) - COTP_DATA_HEADER_SIZE;
@@ -203,9 +188,7 @@ CotpConnection_sendDataMessage(CotpConnection* self, ByteBuffer* payload)
 
 
 /* client side */
-CotpIndication
-CotpConnection_sendConnectionRequestMessage(CotpConnection* self)
-{
+CotpIndication CotpConnection_sendConnectionRequestMessage(CotpConnection* self) {
 	int len = 22;
 
 	if (writeRfc1006Header(self, len) == ERROR)
@@ -245,9 +228,7 @@ CotpConnection_sendConnectionRequestMessage(CotpConnection* self)
 	return indication;
 }
 
-CotpIndication
-CotpConnection_sendConnectionResponseMessage(CotpConnection* self)
-{
+CotpIndication CotpConnection_sendConnectionResponseMessage(CotpConnection* self) {
 	int len = getConnectionResponseLength(self);
 
 	if (writeRfc1006Header(self, len) == ERROR)
@@ -268,8 +249,7 @@ CotpConnection_sendConnectionResponseMessage(CotpConnection* self)
 	return OK;
 }
 
-static int
-cotp_parse_options(CotpConnection* self, int opt_len) {
+static int cotp_parse_options(CotpConnection* self, int opt_len) {
 	int read_bytes = 0;
 	uint8_t option_type, option_len, uint8_value;
 	uint16_t uint16_value;
@@ -324,10 +304,7 @@ cpo_error:
 	return -1;
 }
 
-void
-CotpConnection_init(CotpConnection* self, Socket socket,
-		ByteBuffer* payloadBuffer)
-{
+void CotpConnection_init(CotpConnection* self, Socket socket, ByteBuffer* payloadBuffer) {
 	self->state = 0;
 	self->socket = socket;
 	self->srcRef = -1;
@@ -341,22 +318,17 @@ CotpConnection_init(CotpConnection* self, Socket socket,
 	self->stream = ByteStream_create(self->socket, self->writeBuffer);
 }
 
-void
-CotpConnection_destroy(CotpConnection* self)
-{
+void CotpConnection_destroy(CotpConnection* self) {
 	ByteStream_destroy(self->stream);
 	ByteBuffer_destroy(self->writeBuffer);
 }
 
-int inline /* in byte */
-CotpConnection_getTpduSize(CotpConnection* self)
-{
+/* in byte */
+int inline CotpConnection_getTpduSize(CotpConnection* self) {
 	return (1 << self->options.tpdu_size);
 }
 
-void
-CotpConnection_setTpduSize(CotpConnection* self, int tpduSize /* in byte */)
-{
+void CotpConnection_setTpduSize(CotpConnection* self, int tpduSize /* in byte */) {
 	int newTpduSize = 1;
 
 	if (tpduSize > COTP_MAX_TPDU_SIZE)
@@ -371,9 +343,7 @@ CotpConnection_setTpduSize(CotpConnection* self, int tpduSize /* in byte */)
 	self->options.tpdu_size = newTpduSize;
 }
 
-ByteBuffer*
-CotpConnection_getPayload(CotpConnection* self)
-{
+ByteBuffer* CotpConnection_getPayload(CotpConnection* self) {
 	return self->payload;
 }
 
@@ -395,9 +365,7 @@ int CotpConnection_getDstRef(CotpConnection* self) {
     +--+------+---------+---------+---+---+------+-------+---------+
 */
 
-static int
-cotp_parse_CRequest_tpdu(CotpConnection* self, uint8_t len)
-{
+static int cotp_parse_CRequest_tpdu(CotpConnection* self, uint8_t len) {
 	uint16_t dstRef;
 	uint16_t srcRef;
 	uint8_t class;
@@ -420,9 +388,7 @@ cotp_parse_CRequest_tpdu(CotpConnection* self, uint8_t len)
 	return cotp_parse_options(self, len - 6);
 }
 
-static int
-cotp_parse_CConfirm_tpdu(CotpConnection* self, uint8_t len)
-{
+static int cotp_parse_CConfirm_tpdu(CotpConnection* self, uint8_t len) {
 	uint16_t dstRef;
 	uint16_t srcRef;
 	uint8_t class;
@@ -445,9 +411,7 @@ cotp_parse_CConfirm_tpdu(CotpConnection* self, uint8_t len)
 	return cotp_parse_options(self, len - 6);
 }
 
-static int
-cotp_parse_DATA_tpdu(CotpConnection* self, uint8_t len)
-{
+static int cotp_parse_DATA_tpdu(CotpConnection* self, uint8_t len) {
 	uint8_t eot;
 
 	if (len != 2) return -1;
@@ -464,9 +428,7 @@ cotp_parse_DATA_tpdu(CotpConnection* self, uint8_t len)
 	return 1;
 }
 
-static CotpIndication
-parseRFC1006Header(CotpConnection* self, uint16_t* rfc1006_length)
-{
+static CotpIndication parseRFC1006Header(CotpConnection* self, uint16_t* rfc1006_length) {
 	uint8_t b;
 	if (ByteStream_readUint8(self->stream, &b) == -1) return ERROR;
 	if (b != 3)
@@ -483,9 +445,7 @@ parseRFC1006Header(CotpConnection* self, uint16_t* rfc1006_length)
 	return OK;
 }
 
-static CotpIndication
-parseIncomingMessage(CotpConnection* self)
-{
+static CotpIndication parseIncomingMessage(CotpConnection* self) {
 	uint8_t len;
 	uint8_t tpduType;
 	uint16_t rfc1006Length;
@@ -526,9 +486,7 @@ parseIncomingMessage(CotpConnection* self)
 		return ERROR;
 }
 
-static int
-addPayloadToBuffer(CotpConnection* self, int rfc1006Length)
-{
+static int addPayloadToBuffer(CotpConnection* self, int rfc1006Length) {
 	int payloadLength = rfc1006Length - 7;
 
 	if ((self->payload->size + payloadLength) > COTP_MAX_BUF_SIZE)
@@ -556,9 +514,7 @@ addPayloadToBuffer(CotpConnection* self, int rfc1006Length)
 	}
 }
 
-CotpIndication
-CotpConnection_parseIncomingMessage(CotpConnection* self)
-{
+CotpIndication CotpConnection_parseIncomingMessage(CotpConnection* self) {
 	self->payload->size = 0;
 	return parseIncomingMessage(self);
 }

@@ -16,8 +16,7 @@ extern IedModel staticIedModel;
 
 static int running = 0;
 
-void sigint_handler(int signalId)
-{
+void sigint_handler(int signalId) {
 	running = 0;
 }
 
@@ -33,7 +32,6 @@ int main(int argc, char** argv) {
 
 	/* MMS server will be instructed to start listening to client connections. */
 	IedServer_start(iedServer);
-
 
 	running = 1;
 

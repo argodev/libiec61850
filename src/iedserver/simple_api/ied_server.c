@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "iec61850_simple_server_api.h"
@@ -33,9 +33,7 @@ struct sSimpleIedServer {
 };
 
 
-IedServer
-IedServer_create(IedModel* iedModel)
-{
+IedServer IedServer_create(IedModel* iedModel) {
 	IedServer self = calloc(1, sizeof(struct sSimpleIedServer));
 
 	self->model = iedModel;
@@ -52,9 +50,8 @@ IedServer_create(IedModel* iedModel)
 	return self;
 }
 
-void /* Destructor */
-IedServer_destroy(IedServer self)
-{
+/* Destructor */
+void IedServer_destroy(IedServer self) {
 	MmsServer_destroy(self->mmsServer);
 	IsoServer_destroy(self->isoServer);
 	MmsMapping_destroy(self->mmsMapping);
@@ -62,66 +59,46 @@ IedServer_destroy(IedServer self)
 	free(self);
 }
 
-IsoServer
-IedServer_getIsoServer(IedServer self)
-{
+IsoServer IedServer_getIsoServer(IedServer self) {
 	return self->isoServer;
 }
 
-void
-IedServer_start(IedServer self)
-{
+void IedServer_start(IedServer self) {
 	MmsServer_startListening(self->mmsServer);
 }
 
-bool
-IedServer_isRunning(IedServer self)
-{
+bool IedServer_isRunning(IedServer self) {
 	if (IsoServer_getState(self->isoServer) == ISO_SVR_STATE_RUNNING)
 		return true;
 	else
 		return false;
 }
 
-void
-IedServer_stop(IedServer self)
-{
+void IedServer_stop(IedServer self) {
 	MmsServer_stopListening(self->mmsServer);
 }
 
-void
-IedServer_lockDataModel(IedServer self)
-{
+void IedServer_lockDataModel(IedServer self) {
 	MmsServer_lockModel(self->mmsServer);
 }
 
-void
-IedServer_unlockDataModel(IedServer self)
-{
+void IedServer_unlockDataModel(IedServer self) {
 	MmsServer_unlockModel(self->mmsServer);
 }
 
-MmsDomain*
-IedServer_getDomain(IedServer self, char* logicalDeviceName)
-{
+MmsDomain* IedServer_getDomain(IedServer self, char* logicalDeviceName) {
 	return MmsDevice_getDomain(self->mmsDevice, logicalDeviceName);
 }
 
-MmsValue*
-IedServer_getValue(IedServer self, MmsDomain* domain, char* mmsItemId)
-{
+MmsValue* IedServer_getValue(IedServer self, MmsDomain* domain, char* mmsItemId) {
 	return MmsServer_getValueFromCache(self->mmsServer, domain, mmsItemId);
 }
 
-void
-IedServer_setDefaultValue(IedServer self, MmsDomain* domain, char* mmsItemId)
-{
+void IedServer_setDefaultValue(IedServer self, MmsDomain* domain, char* mmsItemId) {
 	//TODO implement me
 }
 
-void
-IedServer_setAllModelDefaultValues(IedServer self)
-{
+void IedServer_setAllModelDefaultValues(IedServer self) {
 
 	int domain = 0;
 
@@ -137,20 +114,13 @@ IedServer_setAllModelDefaultValues(IedServer self)
 			MmsValue* defaultValue = MmsValue_newDefaultValue(logicalDevice->namedVariables[i]);
 			MmsServer_insertIntoCache(self->mmsServer, logicalDevice, itemId, defaultValue);
 		}
-
 	}
-
-
 }
 
-void
-IedServer_installReadHandler(IedServer self, ReadVariableHandler readHandler, void* object)
-{
+void IedServer_installReadHandler(IedServer self, ReadVariableHandler readHandler, void* object) {
 	MmsServer_installReadHandler(self->mmsServer, readHandler, object);
 }
 
-void
-IedServer_installWriteHandler(IedServer self, WriteVariableHandler writeHandler, void* object)
-{
+void IedServer_installWriteHandler(IedServer self, WriteVariableHandler writeHandler, void* object) {
 	MmsServer_installWriteHandler(self->mmsServer, writeHandler, object);
 }

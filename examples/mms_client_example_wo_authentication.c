@@ -39,4 +39,3 @@ int main(int argc, char** argv) {
 exit:
 	MmsConnection_destroy(con);
 }
-

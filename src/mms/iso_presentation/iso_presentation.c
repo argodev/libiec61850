@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stdlib.h>
@@ -35,16 +35,12 @@ static uint8_t asn_id_mms[] = {0x28, 0xca, 0x22, 0x02, 0x01};
 
 static uint8_t ber_id[] = {0x51, 0x01};
 
-static int
-write_out(const void *buffer, size_t size, void *app_key)
-{
+static int write_out(const void *buffer, size_t size, void *app_key) {
     ByteBuffer* writeBuffer = (ByteBuffer*) app_key;
     return ByteBuffer_append(writeBuffer, (uint8_t*) buffer, size);
 }
 
-IsoPresentationIndication
-isoPres_setContextDefinition(IsoPresentation* self, int index, struct Member* member)
-{
+IsoPresentationIndication isoPres_setContextDefinition(IsoPresentation* self, int index, struct Member* member) {
 	if (member->abstractsyntaxname.size > 9) {
 		if (DEBUG) printf("iso_presentation.c: ASN OID size to large.\n");
 		return PRESENTATION_ERROR;
@@ -62,10 +58,7 @@ isoPres_setContextDefinition(IsoPresentation* self, int index, struct Member* me
 	return PRESENTATION_OK;
 }
 
-
-static void
-createConnectPdu(IsoPresentation* self, ByteBuffer* buffer, ByteBuffer* payload)
-{
+static void createConnectPdu(IsoPresentation* self, ByteBuffer* buffer, ByteBuffer* payload) {
 	CPtype_t* cptype = 0;
 
 	cptype = calloc(1, sizeof(CPtype_t));
@@ -148,7 +141,6 @@ createConnectPdu(IsoPresentation* self, ByteBuffer* buffer, ByteBuffer* payload)
 	userData->choice.fullyencodeddata.list.array[0]
 		     ->presentationdatavalues.choice.singleASN1type.buf = payload->buffer;
 
-
 	cptype->normalmodeparameters->userdata = userData;
 
 	asn_enc_rval_t rval;
@@ -171,9 +163,7 @@ createConnectPdu(IsoPresentation* self, ByteBuffer* buffer, ByteBuffer* payload)
 	asn_DEF_CPtype.free_struct(&asn_DEF_CPtype, cptype, 0);
 }
 
-static IsoPresentationIndication
-parseConnectPdu
-(
+static IsoPresentationIndication parseConnectPdu (
 		IsoPresentation* self,
 		ByteBuffer* buffer
 )
@@ -251,15 +241,11 @@ cptype_error:
 	return PRESENTATION_ERROR;
 }
 
-void
-IsoPresentation_init(IsoPresentation* session)
-{
+void IsoPresentation_init(IsoPresentation* session) {
 
 }
 
-static int
-calcLengthOfBERLengthField(int value)
-{
+static int calcLengthOfBERLengthField(int value) {
 	if (value < 128)
 		return 1;
 	if (value < 0x100)
@@ -270,9 +256,7 @@ calcLengthOfBERLengthField(int value)
 	return -1;
 }
 
-static int
-encodeBERLengthField(uint8_t* buffer, int pos, int value)
-{
+static int encodeBERLengthField(uint8_t* buffer, int pos, int value) {
 	if (value < 128) {
 		buffer[pos++] = (uint8_t) value;
 		return pos;
@@ -291,9 +275,7 @@ encodeBERLengthField(uint8_t* buffer, int pos, int value)
 	return -1;
 }
 
-IsoPresentationIndication
-IsoPresentation_createUserData(IsoPresentation* self, ByteBuffer* writeBuffer, ByteBuffer* payload)
-{
+IsoPresentationIndication IsoPresentation_createUserData(IsoPresentation* self, ByteBuffer* writeBuffer, ByteBuffer* payload) {
 	int pos =  ByteBuffer_getSize(writeBuffer);
 	uint8_t* buf = ByteBuffer_getBuffer(writeBuffer);
 
@@ -323,9 +305,7 @@ IsoPresentation_createUserData(IsoPresentation* self, ByteBuffer* writeBuffer, B
 	return PRESENTATION_OK;
 }
 
-static int
-parseBERLengthField(uint8_t* buffer, int pos, int* length)
-{
+static int parseBERLengthField(uint8_t* buffer, int pos, int* length) {
 	int len;
 
 	if (buffer[pos] & 0x80)
@@ -347,9 +327,7 @@ parseBERLengthField(uint8_t* buffer, int pos, int* length)
 	return pos + 1 + len;
 }
 
-IsoPresentationIndication
-IsoPresentation_parseUserData(IsoPresentation* self, ByteBuffer* buffer)
-{
+IsoPresentationIndication IsoPresentation_parseUserData(IsoPresentation* self, ByteBuffer* buffer) {
 	int length = buffer->size;
 	uint8_t* buf = buffer->buffer;
 
@@ -387,14 +365,10 @@ IsoPresentation_parseUserData(IsoPresentation* self, ByteBuffer* buffer)
 	return PRESENTATION_OK;
 }
 
-IsoPresentationIndication
-IsoPresentation_parseConnect(IsoPresentation* self, ByteBuffer* buffer)
-{
+IsoPresentationIndication IsoPresentation_parseConnect(IsoPresentation* self, ByteBuffer* buffer) {
 	return parseConnectPdu(self, buffer);
 }
 
-void
-IsoPresentation_createConnectPdu(IsoPresentation* self, ByteBuffer* buffer, ByteBuffer* payload)
-{
+void IsoPresentation_createConnectPdu(IsoPresentation* self, ByteBuffer* buffer, ByteBuffer* payload) {
 	createConnectPdu(self, buffer, payload);
 }

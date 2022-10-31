@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef BYTE_STREAM_H_
@@ -33,28 +33,20 @@ typedef struct sByteStream {
 	ByteBuffer* writeBuffer;
 }* ByteStream;
 
-ByteStream
-ByteStream_create(Socket socket, ByteBuffer* writeBuffer);
+ByteStream ByteStream_create(Socket socket, ByteBuffer* writeBuffer);
 
-void
-ByteStream_destroy(ByteStream self);
+void ByteStream_destroy(ByteStream self);
 
-int
-ByteStream_sendBuffer(ByteStream self);
+int ByteStream_sendBuffer(ByteStream self);
 
-int
-ByteStream_writeUint8(ByteStream self, uint8_t byte);
+int ByteStream_writeUint8(ByteStream self, uint8_t byte);
 
-int
-ByteStream_readUint8(ByteStream self, uint8_t* byte);
+int ByteStream_readUint8(ByteStream self, uint8_t* byte);
 
-int
-ByteStream_readUint16(ByteStream self, uint16_t* value);
+int ByteStream_readUint16(ByteStream self, uint16_t* value);
 
-int
-ByteStream_skipBytes(ByteStream self, int number);
+int ByteStream_skipBytes(ByteStream self, int number);
 
-int
-ByteStream_readOctets(ByteStream self, uint8_t* targetBuffer, int size);
+int ByteStream_readOctets(ByteStream self, uint8_t* targetBuffer, int size);
 
 #endif /* BYTE_STREAM_H_ */

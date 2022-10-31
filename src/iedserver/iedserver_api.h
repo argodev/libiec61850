@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef IEDSERVER_API_H_
@@ -36,36 +36,27 @@ typedef struct sIedServerCallbacks {
 	void (*readVariable) (char* objectReference, IedValue value);
 } IedServerCallbacks;
 
-IedServer
-IedServer_create(IedModel* iedModel, SCSMapping scsm);
+IedServer IedServer_create(IedModel* iedModel, SCSMapping scsm);
 
-void
-IedServer_startListening(IedServer self);
+void IedServer_startListening(IedServer self);
 
 /**
  * Get the values for the given object.
  * If the values not exist. They will be created an populated with default values
  * If default values are set no callbacks will be called if a client reads the values!
  */
-void
-IedServer_getValue(IedServer self, char* objectReference, IedValue* value);
+void IedServer_getValue(IedServer self, char* objectReference, IedValue* value);
 
-IsoServer
-IedServer_getIsoServer(IedServer self);
+IsoServer IedServer_getIsoServer(IedServer self);
 /**
  * Set default values for the given object.
  * If default values are set no callbacks will be called if a client reads the values!
  */
-void
-IedServer_setDefaultValues2(IedServer self, char* objectReference);
+void IedServer_setDefaultValues2(IedServer self, char* objectReference);
 
-void
-IedServer_setDefaultValues(IedServer self, LogicalNode* node);
+void IedServer_setDefaultValues(IedServer self, LogicalNode* node);
 
-void
-IedServer_updateValue(IedServer self, IedValue value);
-
-
+void IedServer_updateValue(IedServer self, IedValue value);
 
 ReportControlBlock IedServer_createReportControlBlock(IedServer self);
 ReportControlBlock IedServer_getReportControlBlock(IedServer self, char* objectReference);
@@ -74,10 +65,8 @@ void IedServer_updateReportControlBlock(IedServer self, ReportControlBlock rcb);
 
 IedValue IedServer_getValueReference(IedServer self, char* objectReference);
 
-void
-IedServer_stopListening(IedServer self);
+void IedServer_stopListening(IedServer self);
 
-void
-IedServer_destroy(IedServer self);
+void IedServer_destroy(IedServer self);
 
 #endif /* IEDSERVER_API_H_ */

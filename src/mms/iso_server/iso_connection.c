@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stdlib.h>
@@ -52,9 +52,7 @@ struct sIsoConnection {
 	int state;
 };
 
-
-static void
-handleTcpConnection(IsoConnection self) {
+static void handleTcpConnection(IsoConnection self) {
 	CotpIndication cotpIndication;
 	CotpConnection cotpConnection;
 
@@ -225,9 +223,7 @@ handleTcpConnection(IsoConnection self) {
 	CotpConnection_destroy(&cotpConnection);
 }
 
-IsoConnection
-IsoConnection_create(Socket socket, IsoServer isoServer)
-{
+IsoConnection IsoConnection_create(Socket socket, IsoServer isoServer) {
 	IsoConnection self = calloc(1, sizeof(struct sIsoConnection));
 	self->socket = socket;
 	self->receive_buf = malloc(RECEIVE_BUF_SIZE);
@@ -247,26 +243,18 @@ IsoConnection_create(Socket socket, IsoServer isoServer)
 	return self;
 }
 
-void
-IsoConnection_close(IsoConnection self)
-{
+void IsoConnection_close(IsoConnection self) {
 	self->state = ISO_CON_STATE_STOPPED;
 }
 
-void
-IsoConnection_installListener(IsoConnection self, MessageReceivedHandler handler,
-		void* parameter)
-{
+void IsoConnection_installListener(IsoConnection self, MessageReceivedHandler handler, void* parameter) {
 	self->msgRcvdHandler = handler;
 	self->msgRcvdHandlerParameter = parameter;
 }
 
-void
-IsoConnection_destroy(IsoConnection self)
-{
+void IsoConnection_destroy(IsoConnection self) {
 	free(self->receive_buf);
 	free(self->send_buf_1);
 	free(self->send_buf_2);
 	free(self);
 }
-

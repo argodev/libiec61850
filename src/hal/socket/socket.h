@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef SOCKET_H_
@@ -46,36 +46,26 @@ typedef struct sSocket* Socket;
  *
  * \return the newly create TcpServerSocket instance
  */
-ServerSocket
-TcpServerSocket_create(char* address, int port);
+ServerSocket TcpServerSocket_create(char* address, int port);
 
 
-void
-ServerSocket_listen(ServerSocket socket);
+void ServerSocket_listen(ServerSocket socket);
 
-Socket
-ServerSocket_accept(ServerSocket socket);
+Socket ServerSocket_accept(ServerSocket socket);
 
-void
-ServerSocket_setBacklog(ServerSocket socket, int backlog);
+void ServerSocket_setBacklog(ServerSocket socket, int backlog);
 
-void
-ServerSocket_destroy(ServerSocket socket);
+void ServerSocket_destroy(ServerSocket socket);
 
-Socket
-TcpSocket_create();
+Socket TcpSocket_create();
 
-int
-Socket_connect(Socket socket, char* address, int port);
+int Socket_connect(Socket socket, char* address, int port);
 
-int
-Socket_read(Socket socket, uint8_t* buf, int size);
+int Socket_read(Socket socket, uint8_t* buf, int size);
 
-int
-Socket_write(Socket socket, uint8_t* buf, int size);
+int Socket_write(Socket socket, uint8_t* buf, int size);
 
-void
-Socket_destroy(Socket socket);
+void Socket_destroy(Socket socket);
 
 /*! @} */
 

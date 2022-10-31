@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "mms_mapping.h": "c",
+        "mms_server.h": "c",
+        "stdlib.h": "c",
+        "model.h": "c",
+        "string.h": "c"
+    }
+}

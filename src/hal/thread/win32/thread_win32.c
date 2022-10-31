@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <windows.h>
@@ -33,9 +33,7 @@ struct sThread {
 	bool autodestroy;
 };
 
-static DWORD WINAPI
-destroyAutomaticThreadRunner(LPVOID parameter)
-{
+static DWORD WINAPI destroyAutomaticThreadRunner(LPVOID parameter) {
 	Thread thread = (Thread) parameter;
 
 	thread->function(thread->parameter);
@@ -45,17 +43,13 @@ destroyAutomaticThreadRunner(LPVOID parameter)
 	return 0;
 }
 
-static DWORD WINAPI
-threadRunner(LPVOID parameter)
-{
+static DWORD WINAPI threadRunner(LPVOID parameter) {
 	Thread thread = (Thread) parameter;
 
 	return (UINT) thread->function(thread->parameter);
 }
 
-Thread
-Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestroy)
-{
+Thread Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestroy) {
 	DWORD threadId;
 	Thread thread = malloc(sizeof(struct sThread));
 
@@ -72,16 +66,12 @@ Thread_create(ThreadExecutionFunction function, void* parameter, bool autodestro
 	return thread;
 }
 
-void
-Thread_start(Thread thread)
-{
+void Thread_start(Thread thread) {
 	thread->state = 1;
 	ResumeThread(thread->handle);
 }
 
-void
-Thread_destroy(Thread thread)
-{
+void Thread_destroy(Thread thread) {
 	if (thread->state == 1)
 		WaitForSingleObject(thread->handle, INFINITE);
 
@@ -90,9 +80,6 @@ Thread_destroy(Thread thread)
 	free(thread);
 }
 
-void
-Thread_sleep(int millies)
-{
+void Thread_sleep(int millies) {
 	Sleep(millies);
 }
-

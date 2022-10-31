@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef MODEL_H_
@@ -98,7 +98,6 @@ typedef struct sDataObject {
 	DataAttribute** dataAttributes;
 } DataObject;
 
-
 typedef struct {
 	char* objectReference;
 	FunctionalConstraint fc;
@@ -144,19 +143,14 @@ typedef struct {
 	LogicalDevice** devices; /* Array/list of logical devices */
 } IedModel;
 
-char*
-FunctionalConstrained_toString(FunctionalConstraint fc);
+char* FunctionalConstrained_toString(FunctionalConstraint fc);
 
-LogicalDevice*
-IedModel_getDevice(IedModel* model, char* deviceName);
+LogicalDevice* IedModel_getDevice(IedModel* model, char* deviceName);
 
-LogicalNode*
-LogicalDevice_getLogicalNode(LogicalDevice* device, char* nodeName);
+LogicalNode* LogicalDevice_getLogicalNode(LogicalDevice* device, char* nodeName);
 
-int
-LogicalNode_hasFCData(LogicalNode* node, FunctionalConstraint fc);
+int LogicalNode_hasFCData(LogicalNode* node, FunctionalConstraint fc);
 
-int
-DataObject_hasFCData(DataObject* dataObject, FunctionalConstraint fc);
+int DataObject_hasFCData(DataObject* dataObject, FunctionalConstraint fc);
 
 #endif /* MODEL_H_ */

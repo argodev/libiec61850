@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stdio.h>
@@ -29,16 +29,12 @@
 #include "stack_config.h"
 
 
-static int
-write_out(const void *buffer, size_t size, void *app_key)
-{
+static int write_out(const void *buffer, size_t size, void *app_key) {
     ByteBuffer* writeBuffer = (ByteBuffer*) app_key;
     return ByteBuffer_append(writeBuffer, (uint8_t*) buffer, size);
 }
 
-static
-void codeCPAMessage(ByteBuffer* writeBuffer, uint8_t* apdu, size_t apduSize)
-{
+static void codeCPAMessage(ByteBuffer* writeBuffer, uint8_t* apdu, size_t apduSize) {
 	CPAPPDU_t* cpatype;
 
     cpatype = calloc(1, sizeof(CPAPPDU_t));
@@ -122,7 +118,6 @@ void codeCPAMessage(ByteBuffer* writeBuffer, uint8_t* apdu, size_t apduSize)
 
 	cpatype->normalmodeparameters->userdata = userdata;
 
-
 	asn_enc_rval_t rval;
 
 	 rval = der_encode(&asn_DEF_CPAPPDU, cpatype,
@@ -133,15 +128,11 @@ void codeCPAMessage(ByteBuffer* writeBuffer, uint8_t* apdu, size_t apduSize)
 	asn_DEF_CPAPPDU.free_struct(&asn_DEF_CPAPPDU, cpatype, 0);
 }
 
-IsoPresentationIndication
-IsoPresentation_createCpaMessage(IsoPresentation* presentation, ByteBuffer* writeBuffer, ByteBuffer* payload)
-{
+IsoPresentationIndication IsoPresentation_createCpaMessage(IsoPresentation* presentation, ByteBuffer* writeBuffer, ByteBuffer* payload) {
 	codeCPAMessage(writeBuffer, payload->buffer, payload->size);
 }
 
-IsoPresentationIndication
-IsoPresentation_parseAcceptMessage(IsoPresentation* self, ByteBuffer* message)
-{
+IsoPresentationIndication IsoPresentation_parseAcceptMessage(IsoPresentation* self, ByteBuffer* message) {
 	CPAPPDU_t* cpatype = 0;
 	asn_dec_rval_t rval;
 
