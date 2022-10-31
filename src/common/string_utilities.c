@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "string_utilities.h"
@@ -69,8 +69,7 @@ char* createString(int count, ...) {
 	return newStr;
 }
 
-char* createStringFromBuffer(uint8_t* buf, int size)
-{
+char* createStringFromBuffer(uint8_t* buf, int size) {
 	char* newStr = malloc(size + 1);
 
 	memcpy(newStr, buf, size);
@@ -78,4 +77,3 @@ char* createStringFromBuffer(uint8_t* buf, int size)
 
 	return newStr;
 }
-

@@ -18,14 +18,13 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "array_list.h"
 #include <stdlib.h>
 
-int
-ArrayList_listSize(void** list)
+int ArrayList_listSize(void** list)
 {
 	int size = 0;
 

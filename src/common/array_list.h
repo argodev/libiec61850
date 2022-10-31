@@ -18,14 +18,13 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef ARRAY_LIST_H_
 #define ARRAY_LIST_H_
 
-int
-ArrayList_listSize(void** list);
+int ArrayList_listSize(void** list);
 
 
 #endif /* ARRAY_LIST_H_ */

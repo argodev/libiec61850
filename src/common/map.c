@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "map.h"
@@ -29,30 +29,22 @@ typedef struct sMapEntry {
 	void* value;
 } MapEntry;
 
-static int
-comparePointerKeys(void* key1, void* key2)
-{
+static int comparePointerKeys(void* key1, void* key2) {
 	return key2 - key1;
 }
 
-Map
-Map_create()
-{
+Map Map_create() {
 	Map map = calloc(1, sizeof(struct sMap));
 	map->entries = LinkedList_create();
 	map->compareKeys = comparePointerKeys;
 	return map;
 }
 
-int
-Map_size(Map map)
-{
+int Map_size(Map map) {
 	return LinkedList_size(map->entries);
 }
 
-void*
-Map_addEntry(Map map, void* key, void* value)
-{
+void* Map_addEntry(Map map, void* key, void* value) {
 	MapEntry* entry = malloc(sizeof(MapEntry));
 	entry->key = key;
 	entry->value = value;
@@ -61,9 +53,7 @@ Map_addEntry(Map map, void* key, void* value)
 	return entry->key;
 }
 
-void*
-Map_removeEntry(Map map, void* key, bool deleteKey)
-{
+void* Map_removeEntry(Map map, void* key, bool deleteKey) {
 	LinkedList element = map->entries;
 	LinkedList lastElement = element;
 	MapEntry* entry;
@@ -90,9 +80,7 @@ Map_removeEntry(Map map, void* key, bool deleteKey)
 	return value;
 }
 
-void*
-Map_getEntry(Map map, void* key)
-{
+void* Map_getEntry(Map map, void* key) {
 	LinkedList element = map->entries;
 	MapEntry* entry;
 
@@ -106,9 +94,7 @@ Map_getEntry(Map map, void* key)
 	return NULL;
 }
 
-void
-Map_delete(Map map, bool deleteKey)
-{
+void Map_delete(Map map, bool deleteKey) {
 	LinkedList element = map->entries;
 	MapEntry* entry;
 
@@ -123,9 +109,7 @@ Map_delete(Map map, bool deleteKey)
 	free(map);
 }
 
-void
-Map_deleteStatic(Map map, bool deleteKey)
-{
+void Map_deleteStatic(Map map, bool deleteKey) {
 	LinkedList element = map->entries;
 	MapEntry* entry;
 
@@ -140,9 +124,7 @@ Map_deleteStatic(Map map, bool deleteKey)
 	free(map);
 }
 
-void
-Map_deleteDeep(Map map, bool deleteKey, void (*valueDeleteFunction) (void*))
-{
+void Map_deleteDeep(Map map, bool deleteKey, void (*valueDeleteFunction) (void*)) {
 	LinkedList element = map->entries;
 	MapEntry* entry;
 

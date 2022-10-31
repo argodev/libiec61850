@@ -18,11 +18,9 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "map.h"
 
-Map
-StringMap_create();
-
+Map StringMap_create();

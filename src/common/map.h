@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef MAP_H_
@@ -37,29 +37,20 @@ struct sMap {
 	int (*compareKeys)(void* key1, void* key2);
 };
 
-Map
-Map_create();
+Map Map_create();
 
-int
-Map_size(Map map);
+int Map_size(Map map);
 
-void*
-Map_addEntry(Map map, void* key, void* value);
+void* Map_addEntry(Map map, void* key, void* value);
 
-void*
-Map_removeEntry(Map map, void* key, bool deleteKey);
+void* Map_removeEntry(Map map, void* key, bool deleteKey);
 
-void*
-Map_getEntry(Map map, void* key);
+void* Map_getEntry(Map map, void* key);
 
-void
-Map_delete(Map map, bool deleteKey);
+void Map_delete(Map map, bool deleteKey);
 
-void
-Map_deleteStatic(Map map, bool deleteKey);
+void Map_deleteStatic(Map map, bool deleteKey);
 
-void
-Map_deleteDeep(Map map, bool deleteKey, void (*valueDeleteFunction) (void*));
-
+void Map_deleteDeep(Map map, bool deleteKey, void (*valueDeleteFunction) (void*));
 
 #endif /* MAP_H_ */

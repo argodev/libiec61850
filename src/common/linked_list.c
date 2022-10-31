@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include <stddef.h>
@@ -26,18 +26,14 @@
 #include <stdio.h>
 #include "linked_list.h"
 
-static LinkedList
-getLastElement(LinkedList list)
-{
+static LinkedList getLastElement(LinkedList list) {
 	while (list->next != NULL) {
 		list = list->next;
 	}
 	return list;
 }
 
-LinkedList
-LinkedList_create()
-{
+LinkedList LinkedList_create() {
 	LinkedList newList;
 
 	newList = malloc(sizeof(struct sLinkedList));
@@ -50,10 +46,7 @@ LinkedList_create()
 /**
  * Destroy list (free). Also frees element data with helper function.
  */
-
-void
-LinkedList_destroyDeep(LinkedList list, void (*valueDeleteFunction) (void*))
-{
+void LinkedList_destroyDeep(LinkedList list, void (*valueDeleteFunction) (void*)) {
 	LinkedList nextElement = list;
 	LinkedList currentElement;
 
@@ -66,18 +59,14 @@ LinkedList_destroyDeep(LinkedList list, void (*valueDeleteFunction) (void*))
 	} while (nextElement != NULL);
 }
 
-void
-LinkedList_destroy(LinkedList list)
-{
+void LinkedList_destroy(LinkedList list) {
 	LinkedList_destroyDeep(list, free);
 }
 
 /**
  * Destroy list (free) without freeing the element data
  */
-void
-LinkedList_destroyStatic(LinkedList list)
-{
+void LinkedList_destroyStatic(LinkedList list) {
 	LinkedList nextElement = list;
 	LinkedList currentElement;
 
@@ -88,9 +77,7 @@ LinkedList_destroyStatic(LinkedList list)
 	} while (nextElement != NULL);
 }
 
-int
-LinkedList_size(LinkedList list)
-{
+int LinkedList_size(LinkedList list) {
 	LinkedList nextElement = list;
 	int size = 0;
 
@@ -102,9 +89,7 @@ LinkedList_size(LinkedList list)
 	return size;
 }
 
-void
-LinkedList_add(LinkedList list, void* data)
-{
+void LinkedList_add(LinkedList list, void* data) {
 	LinkedList newElement = LinkedList_create();
 
 	newElement->data = data;
@@ -114,15 +99,11 @@ LinkedList_add(LinkedList list, void* data)
 	listEnd->next = newElement;
 }
 
-LinkedList inline
-LinkedList_getNext(LinkedList list)
-{
+LinkedList inline LinkedList_getNext(LinkedList list) {
 	return list->next;
 }
 
-void
-LinkedList_printStringList(LinkedList list)
-{
+void LinkedList_printStringList(LinkedList list) {
 	LinkedList element = list;
 
 	int elementCount = 0;
@@ -134,6 +115,3 @@ LinkedList_printStringList(LinkedList list)
 		elementCount++;
 	}
 }
-
-
-

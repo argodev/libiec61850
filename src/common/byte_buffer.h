@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #ifndef BYTE_BUFFER_H_
@@ -33,28 +33,20 @@ typedef struct {
 	int size;
 } ByteBuffer;
 
-ByteBuffer*
-ByteBuffer_create(ByteBuffer* self, int maxSize);
+ByteBuffer* ByteBuffer_create(ByteBuffer* self, int maxSize);
 
-void
-ByteBuffer_wrap(ByteBuffer* self, uint8_t* buf, int size, int maxSize);
+void ByteBuffer_wrap(ByteBuffer* self, uint8_t* buf, int size, int maxSize);
 
-int
-ByteBuffer_append(ByteBuffer* self, uint8_t* data, int dataSize);
+int ByteBuffer_append(ByteBuffer* self, uint8_t* data, int dataSize);
 
-int
-ByteBuffer_appendByte(ByteBuffer* self, uint8_t byte);
+int ByteBuffer_appendByte(ByteBuffer* self, uint8_t byte);
 
-uint8_t*
-ByteBuffer_getBuffer(ByteBuffer* self);
+uint8_t* ByteBuffer_getBuffer(ByteBuffer* self);
 
-int
-ByteBuffer_getSize(ByteBuffer* self);
+int ByteBuffer_getSize(ByteBuffer* self);
 
-int
-ByteBuffer_getMaxSize(ByteBuffer* self);
+int ByteBuffer_getMaxSize(ByteBuffer* self);
 
-int
-ByteBuffer_setSize(ByteBuffer* self, int size);
+int ByteBuffer_setSize(ByteBuffer* self, int size);
 
 #endif /* BYTE_BUFFER_H_ */

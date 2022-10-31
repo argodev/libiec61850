@@ -18,7 +18,7 @@
  *	You should have received a copy of the GNU General Public License
  *	along with libIEC61850.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	See COPYING file for the complete license text.
+ *	See LICENSE file for the complete license text.
  */
 
 #include "byte_buffer.h"
@@ -26,9 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-ByteBuffer*
-ByteBuffer_create(ByteBuffer* self, int maxSize)
-{
+ByteBuffer* ByteBuffer_create(ByteBuffer* self, int maxSize) {
 	if (self == NULL) {
 		self = calloc(1, sizeof(ByteBuffer));
 	}
@@ -40,36 +38,29 @@ ByteBuffer_create(ByteBuffer* self, int maxSize)
 	return self;
 }
 
-void
-ByteBuffer_destroy(ByteBuffer* self)
-{
+void ByteBuffer_destroy(ByteBuffer* self) {
 	free(self->buffer);
 	free(self);
 }
 
-void
-ByteBuffer_wrap(ByteBuffer* self, uint8_t* buf, int size, int maxSize)
-{
+void ByteBuffer_wrap(ByteBuffer* self, uint8_t* buf, int size, int maxSize) {
 	self->buffer = buf;
 	self->size = size;
 	self->maxSize = maxSize;
 }
 
-int
-ByteBuffer_append(ByteBuffer* self, uint8_t* data, int dataSize)
-{
+int ByteBuffer_append(ByteBuffer* self, uint8_t* data, int dataSize) {
 	if (self->size + dataSize <= self->maxSize) {
 		memcpy(self->buffer + self->size, data, dataSize);
 		self->size += dataSize;
 		return 1;
 	}
-	else
+	else {
 		return 0;
+	}
 }
 
-int
-ByteBuffer_appendByte(ByteBuffer* self, uint8_t byte)
-{
+int ByteBuffer_appendByte(ByteBuffer* self, uint8_t byte) {
 	if (self->size  < self->maxSize) {
 		self->buffer[self->size] = byte;
 		self->size ++;
@@ -80,27 +71,19 @@ ByteBuffer_appendByte(ByteBuffer* self, uint8_t byte)
 }
 
 
-uint8_t*
-ByteBuffer_getBuffer(ByteBuffer* self)
-{
+uint8_t* ByteBuffer_getBuffer(ByteBuffer* self) {
 	return self->buffer;
 }
 
-int
-ByteBuffer_getMaxSize(ByteBuffer* self)
-{
+int ByteBuffer_getMaxSize(ByteBuffer* self) {
 	return self->maxSize;
 }
 
-int
-ByteBuffer_getSize(ByteBuffer* self)
-{
+int ByteBuffer_getSize(ByteBuffer* self) {
 	return self->size;
 }
 
-int
-ByteBuffer_setSize(ByteBuffer* self, int size)
-{
+int ByteBuffer_setSize(ByteBuffer* self, int size) {
 	if (size <= self->maxSize)
 		self->size = size;
 
